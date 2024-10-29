@@ -3,4 +3,11 @@
   <component name="AdditionalModuleElements">
     <content url="file://$MODULE_DIR$" />
   </component>
+  <component name="PyNamespacePackagesService">
+    <option name="namespacePackageFolders">
+      <list>
+        <option value="$MODULE_DIR$/ecommerce-spring/src/main/resources/templates" />
+      </list>
+    </option>
+  </component>
 </module>
