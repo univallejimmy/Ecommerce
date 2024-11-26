@@ -13,6 +13,7 @@ public class DetalleOrdenServiceImpl implements IDetalleOrdenService{
 
     @Override
     public DetalleOrden save(DetalleOrden detalleOrden) {
+
         return detalleOrdenRepository.save(detalleOrden);
     }
 }
