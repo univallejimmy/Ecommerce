@@ -106,4 +106,5 @@ public class UsuarioController {
         session.removeAttribute("idusuario");
         return "redirect:/";
     }
+
 }

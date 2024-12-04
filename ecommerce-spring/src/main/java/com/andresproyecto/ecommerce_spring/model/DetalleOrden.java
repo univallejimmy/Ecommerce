@@ -13,10 +13,14 @@ public class DetalleOrden {
     private double precio;
     private double total;
 
-    @OneToOne
-    private Orden orden;
     @ManyToOne
+    @JoinColumn(name = "orden_id", nullable = false)  // Asegúrate de que coincida con el esquema
+    private Orden orden;
+
+    @ManyToOne
+    @JoinColumn(name = "producto_id", nullable = false)  // Asegúrate de que coincida con el esquema
     private Producto producto;
+
 
     public DetalleOrden() {}
 

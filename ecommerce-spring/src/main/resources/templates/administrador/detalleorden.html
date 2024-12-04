@@ -8,7 +8,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title th:href="@{/}">Spring eCommerce</title>
+  <title th:href="@{/administrador}">Spring eCommerce</title>
 
 
   <!-- Bootstrap core CSS -->
@@ -35,8 +35,8 @@
       </h1>
 
       <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="home.html">Home</a></li>
-        <li class="breadcrumb-item"><a href="compras.html">Compras</a></li>
+        <li class="breadcrumb-item"><a th:href="@{/administrador}">Home</a></li>
+        <li class="breadcrumb-item"><a >Compras</a></li>
         <li class="breadcrumb-item active">Detalle de Compra</li>
       </ol>
 
@@ -48,6 +48,7 @@
             <table class="table">
               <thead>
                 <tr>
+
                   <th scope="col">Cantidad</th>
                   <th scope="col">Producto</th>                  
                   <th scope="col">Precio</th>
@@ -56,6 +57,7 @@
               </thead>
               <tbody>
                 <tr th:each="detalle:${detalles}">
+
                   <td th:text="${detalle.cantidad}"></td>
                   <td th:text="${detalle.nombre}"></td>
                   <td th:text="${detalle.precio}"></td>
