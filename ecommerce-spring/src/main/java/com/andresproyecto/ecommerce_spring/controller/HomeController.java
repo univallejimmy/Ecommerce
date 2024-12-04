@@ -8,6 +8,8 @@ import com.andresproyecto.ecommerce_spring.service.IDetalleOrdenService;
 import com.andresproyecto.ecommerce_spring.service.IOrdenService;
 import com.andresproyecto.ecommerce_spring.service.IUsuarioService;
 import com.andresproyecto.ecommerce_spring.service.ProductoService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +44,9 @@ public class HomeController {
     Orden orden = new Orden();
 
     @GetMapping("")
-    public String home(Model model) {
+    public String home(Model model, HttpServletRequest session) {
+
+        log.info("Session del usuario: {}", session.getAttribute("idusuario"));
 
         model.addAttribute("productos", productoService.findAll());
 
@@ -76,6 +80,7 @@ public class HomeController {
         //validar que el carrito no se añada dos veces
         Integer idProducto=producto.getId();
         boolean ingresado=detalles.stream().anyMatch(p ->p.getProducto().getId()==idProducto);
+
         if(!ingresado){
             detalles.add(detalleOrden);
         }
@@ -115,8 +120,14 @@ public class HomeController {
         return "/usuario/carrito";
     }
     @GetMapping("/order")
-    public String order(Model model){
-        Usuario usuario = usuarioService.findById(1).get();
+    public String order(Model model, HttpSession session){
+        Object idUsuarioAttr = session.getAttribute("idusuario");
+        if (idUsuarioAttr == null) {
+            // Redirigir al usuario a la página de inicio de sesión
+            return "redirect:/usuario/login";
+        }
+
+        Usuario usuario = usuarioService.findById(Integer.parseInt(session.getAttribute("idusuario").toString())).get();
         model.addAttribute("cart", detalles);
         model.addAttribute("orden", orden);
         model.addAttribute("usuario", usuario);
@@ -124,13 +135,16 @@ public class HomeController {
     }
 
 
+
+
+
     //guardar la orden
     @GetMapping("/saveOrder")
-    public String saveOrder(){
+    public String saveOrder(HttpSession session){
         Date fechaCreacion = new Date();
         orden.setFechaCreacion(fechaCreacion);
         orden.setNumero(ordenService.generarNumeroOrden());
-        Usuario usuario = usuarioService.findById(1).get();
+        Usuario usuario = usuarioService.findById(Integer.parseInt(session.getAttribute("idusuario").toString())).get();
 
         //guardar usuario
         orden.setUsuario(usuario);

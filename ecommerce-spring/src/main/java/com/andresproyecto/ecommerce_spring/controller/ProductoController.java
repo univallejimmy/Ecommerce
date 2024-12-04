@@ -2,8 +2,10 @@ package com.andresproyecto.ecommerce_spring.controller;
 
 import com.andresproyecto.ecommerce_spring.model.Producto;
 import com.andresproyecto.ecommerce_spring.model.Usuario;
+import com.andresproyecto.ecommerce_spring.service.IUsuarioService;
 import com.andresproyecto.ecommerce_spring.service.ProductoService;
 import com.andresproyecto.ecommerce_spring.service.UploadFileService;
+import jakarta.servlet.http.HttpSession;
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,6 +25,9 @@ public class ProductoController {
     @Autowired
     private ProductoService productoService;
 
+    @Autowired
+    private IUsuarioService usuarioService;
+
 
     @Autowired
     private UploadFileService upload;
@@ -40,9 +45,9 @@ public class ProductoController {
 
 
     @PostMapping("/save")
-    public String save(Producto producto, @RequestParam("img") MultipartFile file) throws IOException {
+    public String save(Producto producto, @RequestParam("img") MultipartFile file, HttpSession session) throws IOException {
         LOGGER.info("Este es el objeto producto {}", producto);
-        Usuario u = new Usuario(1, "", "", "", "", "", "", "");
+        Usuario u = usuarioService.findById(Integer.parseInt(session.getAttribute("idusuario").toString())).get();
         producto.setUsuario(u);
         // imagen
         if (producto.getId() == null) {//cuando secrea un producto
